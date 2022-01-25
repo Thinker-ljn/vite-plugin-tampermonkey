@@ -85,7 +85,7 @@ async function main() {
   step('\nRunning tests...')
   if (!skipTests && !isDryRun) {
     await run(bin('jest'), ['--clearCache'])
-    await run('yarn', ['test', '--bail'])
+    await run('pnpm', ['test', '--bail'])
   } else {
     console.log(`(skipped)`)
   }
@@ -97,13 +97,13 @@ async function main() {
   // build all packages with types
   step('\nBuilding all packages...')
   if (!skipBuild && !isDryRun) {
-    await run('yarn', ['build', '--release'])
+    await run('pnpm', ['build', '--release'])
   } else {
     console.log(`(skipped)`)
   }
 
   // generate changelog
-  await run(`yarn`, ['changelog'])
+  await run(`pnpm`, ['changelog'])
 
   const { stdout } = await run('git', ['diff'], { stdio: 'pipe' })
   if (stdout) {
@@ -157,7 +157,7 @@ async function publishPackage(version, runIfNotDry) {
   step(`Publishing ${pkgName}...`)
   try {
     await runIfNotDry(
-      'yarn',
+      'pnpm',
       [
         'publish',
         ...(releaseTag ? ['--tag', releaseTag] : []),
