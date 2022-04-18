@@ -62,16 +62,15 @@ const rollupOptions = {
 
   自动分析代码中使用的 `tampermonker` 的 `grant`，并加入声明中
 
-
 ## vite 配置额外说明
 
 生产构建模式将强制配置 `config.build`:
 
 - 入口为 `src/main.js` 或者 `src/main.ts`，由 `vite.config.(j|t)s` 文件决定
-- 构建的包名为 `package.json` 的 `name` 属性的驼峰模式，构建的文件名也与其相关，文件打包格式为 `iife`，不压缩，不分离 `css` 文件。
+- 构建的包名为 `package.json` 的 `name` （**必须填写**）属性的驼峰模式，构建的文件名也与其相关，文件打包格式为 `iife`，不压缩，不分离 `css` 文件。
 - 额外配置了 `rollupOptions`，以支持其他功能。
 
-## 禁止CSP
+## 禁止CSP(Content-Security-Policy)
 
-在开发模式下，需要通过 `script` 标签注入 `vite` 的脚本，有些网站开启了 CSP，导致报错，可以通过 [chrome插件Disable Content-Security-Policy](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden)，来禁止CSP，在开发时开启插件即可。
+在开发模式下，需要通过 `script` 标签注入 `vite` 的脚本，有些网站开启了 `CSP(Content-Security-Policy)`，导致报错，可以安装`Chrome`插件[Disable Content-Security-Policy](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden)或者[Always Disable Content-Security-Policy](https://chrome.google.com/webstore/detail/always-disable-content-se/ffelghdomoehpceihalcnbmnodohkibj)，来禁止`CSP(Content-Security-Policy)`，**在开发时开启插件即可（其他时间记得关闭以保证网页浏览的安全性）**。
 
