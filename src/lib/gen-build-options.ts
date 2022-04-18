@@ -73,6 +73,12 @@ export function gendefaultBuildOptions(): LibraryOptions {
   const pkgPath = path.resolve(root, './package.json')
 
   const json = JSON.parse(fs.readFileSync(pkgPath, 'utf8'))
+
+  if (!json.name) {
+    const error = 'props `name` in package.json is required!'
+    console.error(error)
+    throw new Error(error)
+  }
   const name = buildName(json.name)
 
   return {
