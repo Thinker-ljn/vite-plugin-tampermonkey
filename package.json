@@ -32,7 +32,7 @@
     "*.{js,jsx,ts,tsx}": "eslint --fix"
   },
   "author": "Thinker-ljn",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@nexhome/yorkie": "^2.0.8",
     "@types/jest": "^27.0.2",
