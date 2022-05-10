@@ -70,6 +70,26 @@ const rollupOptions = {
 - 构建的包名为 `package.json` 的 `name` （**必须填写**）属性的驼峰模式，构建的文件名也与其相关，文件打包格式为 `iife`，不压缩，不分离 `css` 文件。
 - 额外配置了 `rollupOptions`，以支持其他功能。
 
+## UnoCSS
+
+如果你有使用 [Unocss](https://github.com/unocss/unocss) 的话，需要把 `UnoCSS` 插件放置在本插件之前，确保在 `UnoCSS` 处理完样式后再由本插件来合并到入口文件内。
+
+```ts
+import { defineConfig } from 'vite'
+import tampermonkey from 'vite-plugin-tampermonkey'
+import Unocss from 'unocss/vite'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    Unocss(),
+    tampermonkey({
+      externalGlobals: ['vue']
+    })
+  ],
+})
+```
+
 ## 禁止CSP(Content-Security-Policy)
 
 在开发模式下，需要通过 `script` 标签注入 `vite` 的脚本，有些网站开启了 `CSP(Content-Security-Policy)`，导致报错，可以安装`Chrome`插件[Disable Content-Security-Policy](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden)或者[Always Disable Content-Security-Policy](https://chrome.google.com/webstore/detail/always-disable-content-se/ffelghdomoehpceihalcnbmnodohkibj)，来禁止`CSP(Content-Security-Policy)`，**在开发时开启插件即可（其他时间记得关闭以保证网页浏览的安全性）**。

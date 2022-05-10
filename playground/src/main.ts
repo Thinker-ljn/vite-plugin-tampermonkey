@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import 'uno.css'
 
 const container = (parent: Element) => {
   const appContainer = document.createElement('div')

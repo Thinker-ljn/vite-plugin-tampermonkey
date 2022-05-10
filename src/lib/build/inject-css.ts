@@ -1,5 +1,3 @@
-import fs from 'fs'
-import path from 'path'
 import { Plugin } from 'vite'
 
 const INTRO_FOR_PLACEHOLDER =
@@ -33,36 +31,30 @@ export const addExtraTmGrant = (tmConfig: Record<string, any>) => {
   return tmConfig
 }
 
-const allCss: string[] = []
 export const injectCssPluginOption: Plugin = {
   name: 'inject-css',
-  transform(code: string, id: string) {
-    if (/\.(c|le|sc)ss$/.test(id)) {
-      allCss.push(code)
-      return {
-        code: '',
-      }
-    }
-  },
-  async writeBundle({ dir }, bundle) {
-    for (const fileName of Object.keys(bundle)) {
-      const dist = dir || path.resolve(process.cwd(), 'dist')
-      const filePath: string = path.resolve(dist, fileName)
-
-      try {
-        fs.writeFileSync(
-          filePath,
-          fs
-            .readFileSync(filePath, 'utf-8')
-            .replace(
-              INTRO_FOR_PLACEHOLDER,
-              allCss.length
-                ? `${GM_ADD_STYLE}(${['`', ...allCss, '`'].join('\n')})`
-                : ''
-            )
+  apply: 'build',
+  enforce: 'post',
+  generateBundle(_, bundle) {
+    const cssFiles = Object.keys(bundle).filter((i) => i.endsWith('.css'))
+    const jsFiles = Object.keys(bundle).filter((i) => i.endsWith('.js'))
+    const cssContent = cssFiles
+      .map((cssFile) => {
+        const chunk = bundle[cssFile]
+        if (chunk.type === 'asset' && typeof chunk.source === 'string') {
+          delete bundle[cssFile]
+          return chunk.source
+        }
+        return ''
+      })
+      .join('\n')
+    for (const jsFile of jsFiles) {
+      const chunk = bundle[jsFile]
+      if (chunk.type === 'chunk') {
+        chunk.code = chunk.code.replace(
+          INTRO_FOR_PLACEHOLDER,
+          `${GM_ADD_STYLE}(${JSON.stringify(cssContent)})`
         )
-      } catch (e) {
-        console.error(e)
       }
     }
   },
