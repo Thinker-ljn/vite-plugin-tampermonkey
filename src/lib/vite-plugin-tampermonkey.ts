@@ -12,31 +12,25 @@ interface Options {
   autoGrant?: boolean
 }
 
-export default function tampermonkeyPlugin(options: Options = {}): Plugin {
-  const injectCss =
-    process.env.NODE_ENV === 'production'
-      ? {
-          transform: injectCssPluginOption.transform,
-          writeBundle: injectCssPluginOption.writeBundle,
-        }
-      : {}
-
+export default function tampermonkeyPlugin(options: Options = {}): Plugin[] {
   const autoGrantModuleParsed =
     options.autoGrant === false ? undefined : parserGrant.moduleParsed
-  return {
-    name: 'tampermonkey-dev-entry',
-    configureServer(server) {
-      return () => {
-        server.httpServer?.on('listening', () => afterServerStart(server))
-        server.middlewares.use(tampermonkeyRouteMiddleware(server))
-        server.middlewares.use(clientCodeRouteMiddleware(server))
-      }
+  return [
+    {
+      name: 'tampermonkey-dev-entry',
+      configureServer(server) {
+        return () => {
+          server.httpServer?.on('listening', () => afterServerStart(server))
+          server.middlewares.use(tampermonkeyRouteMiddleware(server))
+          server.middlewares.use(clientCodeRouteMiddleware(server))
+        }
+      },
+      moduleParsed: autoGrantModuleParsed,
+      config(config) {
+        forceDevelopmentHmr(config)
+        forceBuildConfig(config, options.externalGlobals)
+      },
     },
-    moduleParsed: autoGrantModuleParsed,
-    ...injectCss,
-    config(config) {
-      forceDevelopmentHmr(config)
-      forceBuildConfig(config, options.externalGlobals)
-    },
-  }
+    injectCssPluginOption,
+  ]
 }
