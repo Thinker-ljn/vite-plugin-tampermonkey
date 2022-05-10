@@ -10,9 +10,17 @@ const gmInfo = JSON.stringify(GM_info, null, 2)
   <span class="vite-plugin-tampermonkey-name">
     V<span class="vite-plugin-tampermonkey-name-detail">ite-</span>P<span class="vite-plugin-tampermonkey-name-detail">lugin-</span>T<span class="vite-plugin-tampermonkey-name-detail">ampermonkey</span>
   </span>
-  <pre v-if="visible">
-    {{ gmInfo }}
-  </pre>
+  <div v-show="visible" class="w-[50%] h-[60%] overflow-hidden">
+    <div :class="visible ? 'w-full h-full' : 'w-0 h-0'">
+      <div font-sans flex justify="center items-center" text="2xl">
+        <div class="i-carbon-sun hover:i-carbon-moon bg-[#888]" />
+        <div>UnoCSS - test</div>
+      </div>
+      <pre>
+        {{ gmInfo }}
+      </pre>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -36,7 +44,8 @@ const gmInfo = JSON.stringify(GM_info, null, 2)
   background-color: #232323;
   color: #f5f5f5;
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 15px 0px;
-  transition: all .6s;
+  transition-duration: 0.6s;
+  transition-property: width, height, bottom, right, transform, border-radius, background-color;
   &-name {
     display: flex;
     justify-content: center;
@@ -68,8 +77,6 @@ const gmInfo = JSON.stringify(GM_info, null, 2)
   }
   pre {
     font-size: 12px;
-    height: 50%;
-    width: 60%;
     overflow: auto;
     &::-webkit-scrollbar {
       width: 6px;
