@@ -1,3 +1,12 @@
+## [1.0.3](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/compare/v1.0.2...v1.0.3) (2022-05-10)
+
+
+### Bug Fixes
+
+* capable with css post-processing, e.g. UnoCSS ([c810750](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/commit/c81075023343526745f6dcbb6a2cfae9960ad16b))
+
+
+
 ## [1.0.2](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/compare/v1.0.1...v1.0.2) (2022-05-10)
 
 
