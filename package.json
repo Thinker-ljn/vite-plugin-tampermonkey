@@ -15,6 +15,10 @@
     ".": {
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
+    },
+    "./client": {
+      "import": "./dist/lib/client/code.mjs",
+      "require": "./dist/lib/client/code.js"
     }
   },
   "scripts": {
@@ -56,7 +60,7 @@
     "ts-jest": "^27.0.5",
     "tsup": "^5.3.0",
     "typescript": "^4.4.3",
-    "vite": "^2.6.7"
+    "vite": "2.9.5"
   },
   "dependencies": {
     "acorn-walk": "^8.2.0"

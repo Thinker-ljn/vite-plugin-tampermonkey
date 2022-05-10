@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 import { LibraryOptions, BuildOptions } from 'vite'
-import bannerGen from './gen-banner'
+import bannerGen from '../tampermonkey/banner'
 import { addExtraTmGrant, genRollupIntro } from './inject-css'
-import { addUsedGrants } from './tampermonkey-grant'
+import { addUsedGrants } from '../tampermonkey/grant'
 const root = process.cwd()
 const UNPKG = 'https://unpkg.com'
 

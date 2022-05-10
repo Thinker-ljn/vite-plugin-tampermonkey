@@ -1,5 +1,6 @@
 import { Plugin } from 'vite'
 import { full as walkFull } from 'acorn-walk'
+import { genDevTampermonkeyClientUrl } from '../client'
 
 export const grants = [
   'unsafeWindow',
@@ -64,4 +65,15 @@ export function addUsedGrants(tmConfig: Record<string, any>, isDev = false) {
   } else {
     tmConfig.grant = [...new Set([...(tmConfig.grant || []), ...usedGrants])]
   }
+}
+
+export function patchDdevTmConfig(
+  tmConfig: Record<string, any>,
+  origin: string
+) {
+  tmConfig.grant = grants
+  tmConfig.require = [
+    ...(tmConfig.require || []),
+    genDevTampermonkeyClientUrl(origin),
+  ]
 }
