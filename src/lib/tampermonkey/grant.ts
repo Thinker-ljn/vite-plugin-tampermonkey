@@ -28,10 +28,7 @@ export const grants = [
   'GM_info',
 ]
 
-const tampermonkeyGrantMapper = grants.reduce((mapper, grant) => {
-  mapper[grant] = true
-  return mapper
-}, {} as Record<string, true>)
+const tampermonkeyGrantSet = new Set(grants)
 
 const usedGrants: Set<string> = new Set()
 export const parserGrant: Plugin = {
@@ -42,13 +39,13 @@ export const parserGrant: Plugin = {
         walkFull(moduleInfo.ast, (node: any) => {
           if (node.type === 'CallExpression') {
             const calleeName = node.callee.name
-            if (calleeName && tampermonkeyGrantMapper[calleeName]) {
+            if (calleeName && tampermonkeyGrantSet.has(calleeName)) {
               usedGrants.add(calleeName)
             }
           }
           if (
             node.type === 'Identifier' &&
-            tampermonkeyGrantMapper[node.name]
+            tampermonkeyGrantSet.has(node.name)
           ) {
             usedGrants.add(node.name)
           }
