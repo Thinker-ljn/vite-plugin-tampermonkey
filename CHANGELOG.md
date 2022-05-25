@@ -1,3 +1,12 @@
+## [1.0.4](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/compare/v1.0.3...v1.0.4) (2022-05-25)
+
+
+### Bug Fixes
+
+* auto grants ([f5b6a8f](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/commit/f5b6a8f30bf376dd9917a7a589afec02cc3375df))
+
+
+
 ## [1.0.3](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/compare/v1.0.2...v1.0.3) (2022-05-10)
 
 
