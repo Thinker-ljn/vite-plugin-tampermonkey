@@ -1,3 +1,13 @@
+# [1.1.0](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/compare/v1.0.4...v1.1.0) (2022-05-30)
+
+
+### Features
+
+* add `cdn` option ([d7ad2a5](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/commit/d7ad2a5b366e77eb7b337277cefa794e975c8e19))
+* add more advanced usage to `externalGlobals` ([9b3745b](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/commit/9b3745b2924e4bb2a23f2878a974e64012baf08f))
+
+
+
 ## [1.0.4](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/compare/v1.0.3...v1.0.4) (2022-05-25)
 
 
