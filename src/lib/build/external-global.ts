@@ -1,9 +1,11 @@
 import { Base64 } from 'js-base64'
 import {
+  fillCdnOrigin,
   genRequireFromExternal,
   genRequireFromExternals,
   isManualRequire,
 } from '../tampermonkey/require'
+import { Options } from '../type'
 import { buildName } from '../utils'
 
 type AnyObj = Record<string, string>
@@ -38,50 +40,53 @@ function destruct(
 
   return input
 }
-
-export function externalGlobalParser(
-  input?: ExternalGlobal
-): ExternalGlobalOutput {
-  const defs: ExternalGlobalOutput = {
-    requires: [],
-    external: [],
-    globals: {},
-  }
-  if (!input) {
-    return defs
-  }
-  if (objectGuard(input)) {
-    const externals = Object.keys(input)
-    return {
-      external: externals,
-      globals: input,
-      requires: genRequireFromExternals(externals),
+export function genExternalGlobalParser(options: Options) {
+  return function externalGlobalParser(): ExternalGlobalOutput {
+    const { externalGlobals, cdn } = options
+    const defs: ExternalGlobalOutput = {
+      requires: [],
+      external: [],
+      globals: {},
     }
-  }
-
-  return input.reduce((prev, curr) => {
-    if (typeof curr === 'string') {
-      if (!isManualRequire(curr)) {
-        prev.external.push(curr)
-        prev.globals[curr] = buildName(curr)
+    if (!externalGlobals) {
+      return defs
+    }
+    if (objectGuard(externalGlobals)) {
+      const externals = Object.keys(externalGlobals)
+      return {
+        external: externals,
+        globals: externalGlobals,
+        requires: fillCdnOrigin(genRequireFromExternals(externals), cdn),
       }
-      prev.requires.push(genRequireFromExternal(curr))
+    }
+
+    const result = externalGlobals.reduce((prev, curr) => {
+      if (typeof curr === 'string') {
+        if (!isManualRequire(curr)) {
+          prev.external.push(curr)
+          prev.globals[curr] = buildName(curr)
+        }
+        prev.requires.push(genRequireFromExternal(curr))
+        return prev
+      }
+
+      const { type, varName, pkgName, path } = destruct(curr)
+
+      if (type === 'code') {
+        const b64 = `data:text/javascript;base64,${Base64.encode(pkgName)}`
+        prev.requires.push(b64)
+      } else {
+        if (varName) {
+          prev.globals[pkgName] = varName
+        }
+        prev.external.push(pkgName)
+        prev.requires.push(genRequireFromExternal(pkgName, path))
+      }
+
       return prev
-    }
+    }, defs)
 
-    const { type, varName, pkgName, path } = destruct(curr)
-
-    if (type === 'code') {
-      const b64 = `data:text/javascript;base64,${Base64.encode(pkgName)}`
-      prev.requires.push(b64)
-    } else {
-      if (varName) {
-        prev.globals[pkgName] = varName
-      }
-      prev.external.push(pkgName)
-      prev.requires.push(genRequireFromExternal(pkgName, path))
-    }
-
-    return prev
-  }, defs)
+    result.requires = fillCdnOrigin(result.requires, cdn)
+    return result
+  }
 }

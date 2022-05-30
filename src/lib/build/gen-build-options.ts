@@ -4,16 +4,17 @@ import { LibraryOptions, BuildOptions } from 'vite'
 import bannerGen from '../tampermonkey/banner'
 import { addExtraTmGrant, genRollupIntro } from './inject-css'
 import { addUsedGrants } from '../tampermonkey/grant'
-import { externalGlobalParser } from './external-global'
-import type { ExternalGlobal } from './external-global'
+import { genExternalGlobalParser } from './external-global'
 import { buildName } from '../utils'
+import { Options } from '../type'
 const root = process.cwd()
 
 type RollupOptions = Exclude<BuildOptions['rollupOptions'], undefined>
 
 export function genRollupOptionsGenerator(genBanner: typeof bannerGen) {
-  function rollupOptionsGenerator(input?: ExternalGlobal): RollupOptions {
-    const { requires, external, globals } = externalGlobalParser(input)
+  function rollupOptionsGenerator(options: Options): RollupOptions {
+    const externalGlobalParser = genExternalGlobalParser(options)
+    const { requires, external, globals } = externalGlobalParser()
 
     const banner = () =>
       genBanner('production', (tmConfig) => {

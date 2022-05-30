@@ -5,12 +5,7 @@ import { afterServerStart, tampermonkeyRouteMiddleware } from './tampermonkey'
 import { clientCodeRouteMiddleware } from './client'
 import { forceDevelopmentHmr } from './client/hmr'
 import { forceBuildConfig } from './build/config'
-import { ExternalGlobal } from './build/external-global'
-
-interface Options {
-  externalGlobals?: ExternalGlobal
-  autoGrant?: boolean
-}
+import { Options } from './type'
 
 export default function tampermonkeyPlugin(options: Options = {}): Plugin[] {
   const autoGrantModuleParsed =
@@ -28,7 +23,7 @@ export default function tampermonkeyPlugin(options: Options = {}): Plugin[] {
       moduleParsed: autoGrantModuleParsed,
       config(config) {
         forceDevelopmentHmr(config)
-        forceBuildConfig(config, options.externalGlobals)
+        forceBuildConfig(config, options)
       },
     },
     injectCssPluginOption,

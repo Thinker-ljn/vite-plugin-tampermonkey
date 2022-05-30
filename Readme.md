@@ -76,6 +76,9 @@ const rollupOptions = {
 
 [请点击此处查看更多高级用法](./src/__tests__/external-globals.spec.ts)，可配置路径，代码，链接等。
 
+### `cdn` string 类型，默认为 `https://unpkg.com`
+
+  配置后，依旧可以使用 `externalGlobals` 选项的高级用法覆盖。 
 ### `autoGrant` boolean 类型，默认为 true
 
   自动分析代码中使用的 `tampermonker` 的 `grant`，并加入声明中
