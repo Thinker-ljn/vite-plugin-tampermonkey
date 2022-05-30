@@ -33,11 +33,25 @@ export default defineConfig({
 
 ### `externalGlobals`
   
-  外部包配置，比如 `vue`，`axios` 等，减少打包体积，并且会自动声明 `require` ，如下配置：
+  外部包配置，比如 `vue`，`axios` 等，减少打包体积，并且会自动声明 `require` ，require 会按数组（或者`Object.keys`）的顺序生成，如下配置：
 
+### 类型如下
 ```ts
-type ExternalGlobal = Record<string, string> | string[]
+type AnyObj = Record<string, string>
 
+interface ExternalGlobalItem {
+  /**包名，可以是代码（type = code），或者链接 */
+  pkgName: string
+  varName?: string
+  type?: 'code' | 'package'
+  path?: string
+}
+export type ExternalGlobal =
+  | AnyObj
+  | (string | ExternalGlobalItem | [pkgName: string, varName: string])[]
+```
+#### 简单使用
+```ts
 const options = {
   externalGlobals: ['vue'],
   // externalGlobals: { vue: 'Vue' }
@@ -57,6 +71,10 @@ const rollupOptions = {
 // @require           https://unpkg.com/vue@3.2.20
 
 ```
+
+#### 更多配置方法
+
+[请点击此处查看更多高级用法](./src/__tests__/external-globals.spec.ts)，可配置路径，代码，链接等。
 
 ### `autoGrant` boolean 类型，默认为 true
 

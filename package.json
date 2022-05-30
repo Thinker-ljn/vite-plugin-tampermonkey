@@ -63,6 +63,7 @@
     "vite": "^2.9.6"
   },
   "dependencies": {
-    "acorn-walk": "^8.2.0"
+    "acorn-walk": "^8.2.0",
+    "js-base64": "^3.7.2"
   }
 }

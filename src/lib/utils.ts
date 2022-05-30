@@ -35,3 +35,9 @@ export const isWindows = os.platform() === 'win32'
 export function normalizePath(id: string) {
   return path.posix.normalize(isWindows ? slash(id) : id)
 }
+
+export function buildName(name: string) {
+  return name.replace(/(^|-|\/|@)([a-zA-Z])/g, (m) =>
+    m.replace(/[-@/]/, '').toUpperCase()
+  )
+}

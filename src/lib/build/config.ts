@@ -1,7 +1,7 @@
 import type { UserConfig } from 'vite'
 import bannerGen from '../tampermonkey/banner'
+import type { ExternalGlobal } from './external-global'
 import {
-  ExternalGlobal,
   gendefaultBuildOptions,
   genRollupOptionsGenerator,
 } from './gen-build-options'

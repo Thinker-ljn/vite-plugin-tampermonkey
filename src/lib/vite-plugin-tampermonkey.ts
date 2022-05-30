@@ -1,11 +1,11 @@
 import type { Plugin } from 'vite'
-import { ExternalGlobal } from './build/gen-build-options'
 import { injectCssPluginOption } from './build/inject-css'
 import { parserGrant } from './tampermonkey/grant'
 import { afterServerStart, tampermonkeyRouteMiddleware } from './tampermonkey'
 import { clientCodeRouteMiddleware } from './client'
 import { forceDevelopmentHmr } from './client/hmr'
 import { forceBuildConfig } from './build/config'
+import { ExternalGlobal } from './build/external-global'
 
 interface Options {
   externalGlobals?: ExternalGlobal

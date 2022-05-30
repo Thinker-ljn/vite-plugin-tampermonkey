@@ -4,49 +4,20 @@ import { LibraryOptions, BuildOptions } from 'vite'
 import bannerGen from '../tampermonkey/banner'
 import { addExtraTmGrant, genRollupIntro } from './inject-css'
 import { addUsedGrants } from '../tampermonkey/grant'
+import { externalGlobalParser } from './external-global'
+import type { ExternalGlobal } from './external-global'
+import { buildName } from '../utils'
 const root = process.cwd()
-const UNPKG = 'https://unpkg.com'
-
-type AnyObj = Record<string, string>
-export type ExternalGlobal = AnyObj | string[]
 
 type RollupOptions = Exclude<BuildOptions['rollupOptions'], undefined>
 
-function buildName(name: string) {
-  return name.replace(/(^|-)([a-zA-Z])/g, (m) =>
-    m.replace('-', '').toUpperCase()
-  )
-}
-
-function buildGlobalName(names: string[]) {
-  return names.reduce((result, name) => {
-    result[name] = buildName(name)
-    return result
-  }, {} as AnyObj)
-}
-
 export function genRollupOptionsGenerator(genBanner: typeof bannerGen) {
-  function rollupOptionsGenerator(input?: AnyObj | string[]): RollupOptions {
-    const external = Array.isArray(input) ? input : Object.keys(input || {})
-    const globals = Array.isArray(input) ? buildGlobalName(input) : input
+  function rollupOptionsGenerator(input?: ExternalGlobal): RollupOptions {
+    const { requires, external, globals } = externalGlobalParser(input)
 
-    const tmRequire = external
-      .map((pkgName) => {
-        const modulePkgPath = path.resolve(
-          root,
-          `node_modules/${pkgName}/package.json`
-        )
-        if (fs.existsSync(modulePkgPath)) {
-          const json = JSON.parse(fs.readFileSync(modulePkgPath, 'utf8'))
-          const version = json.version || 'latest'
-          return `${UNPKG}/${pkgName}@${version}`
-        }
-        return ''
-      })
-      .filter(Boolean)
     const banner = () =>
       genBanner('production', (tmConfig) => {
-        tmConfig.require = [...(tmConfig.require || []), ...tmRequire]
+        tmConfig.require = [...(tmConfig.require || []), ...requires]
         addExtraTmGrant(tmConfig)
         addUsedGrants(tmConfig)
       })
