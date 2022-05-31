@@ -35,7 +35,7 @@ export default defineConfig({
   
   外部包配置，比如 `vue`，`axios` 等，减少打包体积，并且会自动声明 `require` ，require 会按数组（或者`Object.keys`）的顺序生成，如下配置：
 
-### 类型如下
+#### 类型如下
 ```ts
 type AnyObj = Record<string, string>
 
