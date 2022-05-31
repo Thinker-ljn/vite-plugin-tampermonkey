@@ -1,3 +1,7 @@
+## [1.1.1](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/compare/v1.1.0...v1.1.1) (2022-05-31)
+
+
+
 # [1.1.0](https://github.com/Thinker-ljn/vite-plugin-tampermonkey/compare/v1.0.4...v1.1.0) (2022-05-30)
 
 
