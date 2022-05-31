@@ -65,5 +65,10 @@
   "dependencies": {
     "acorn-walk": "^8.2.0",
     "js-base64": "^3.7.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thinker-ljn/vite-plugin-tampermonkey.git"
+  },
+  "homepage": "https://github.com/Thinker-ljn/vite-plugin-tampermonkey#readme"
 }
