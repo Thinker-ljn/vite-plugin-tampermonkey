@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vite build",
     "serve": "vite preview"
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "vite": "2.9.5",
     "vite-plugin-inspect": "^0.5.0",
     "vite-plugin-tampermonkey": "link:..",
-    "vue-tsc": "^0.3.0"
+    "vue-tsc": "^0.36.0"
   },
   "tampermonkey": {
     "description": "vite-plugin-tampermonkey",

@@ -31,8 +31,8 @@ export const addExtraTmGrant = (tmConfig: Record<string, any>) => {
   return tmConfig
 }
 
-export const injectCssPluginOption: Plugin = {
-  name: 'inject-css',
+export const tampermonkeyCssPlugin: Plugin = {
+  name: 'tampermonkeyCssPlugin',
   apply: 'build',
   enforce: 'post',
   generateBundle(_, bundle) {
